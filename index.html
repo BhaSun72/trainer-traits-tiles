@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trainer Traits Tiles</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .tile {
+            perspective: 1000px;
+            height: 100%;
+            position: relative;
+        }
+        .tile-content {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+        }
+        .tile.flipped .tile-content {
+            transform: rotateY(180deg);
+        }
+        .tile-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 0.5rem;
+            border: 2px solid #e5e7eb;
+            font-size: 1.25rem;
+            box-sizing: border-box;
+        }
+        .tile-front {
+            color: white; /* Changed front face text to white */
+        }
+        .tile-back {
+            background-color: #3b82f6; /* Uniform color for trait face */
+            color: white;
+            transform: rotateY(180deg);
+        }
+
+        /* New styles for different shapes and colors */
+        .shape-circle {
+            border-radius: 50%;
+        }
+        .shape-square {
+            border-radius: 0;
+        }
+        .shape-rounded {
+            border-radius: 0.75rem;
+        }
+        .shape-parallelogram {
+          clip-path: polygon(20% 0%, 80% 0%, 100% 100%, 0% 100%);
+        }
+        .shape-triangle {
+           clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+        }
+
+        .color-red { background-color: #ef4444; }
+        .color-yellow { background-color: #f59e0b; }
+        .color-green { background-color: #10b981; }
+        .color-blue { background-color: #3b82f6; }
+        .color-purple { background-color: #8b5cf6; }
+        .color-pink { background-color: #ec4899; }
+
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen flex items-center justify-center py-10">
+    <div class="grid grid-cols-3 sm:grid-cols-4 gap-4 w-full max-w-2xl">
+        </div>
+    <script>
+        const traits = [
+            "Passionate", "Knowledgeable", "Engaging", "Patient", "Clear",
+            "Supportive", "Enthusiastic", "Organized", "Adaptable", "Interactive",
+            "Inspiring", "Humorous", "Respectful", "Motivating", "Empathetic",
+            "Creative" // Added one more trait
+        ];
+
+        const gridContainer = document.querySelector('.grid');
+        const shapes = ['shape-circle', 'shape-square', 'shape-rounded', 'shape-parallelogram', 'shape-triangle'];
+        const colors = ['color-red', 'color-yellow', 'color-green', 'color-blue', 'color-purple', 'color-pink'];
+
+        for (let i = 1; i <= 16; i++) { // Changed loop condition to 16
+            const tile = document.createElement('div');
+            tile.classList.add('tile');
+            tile.style.height = '0';
+            tile.style.paddingBottom = '100%';
+
+            const tileContent = document.createElement('div');
+            tileContent.classList.add('tile-content');
+
+            const tileFront = document.createElement('div');
+            tileFront.classList.add('tile-face', 'tile-front', shapes[i % shapes.length], colors[i % colors.length]); // Apply shape and color to front
+            tileFront.textContent = i;
+
+            const tileBack = document.createElement('div');
+            tileBack.classList.add('tile-face', 'tile-back', 'shape-rounded'); // Apply shape and color to back
+            tileBack.textContent = traits[i - 1];
+
+            tileContent.appendChild(tileFront);
+            tileContent.appendChild(tileBack);
+            tile.appendChild(tileContent);
+            tile.addEventListener('click', () => {
+                tile.classList.toggle('flipped');
+            });
+            gridContainer.appendChild(tile);
+        }
+    </script>
+</body>
+</html>
